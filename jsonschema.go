@@ -77,6 +77,8 @@ type Schema struct {
 
 	// calculated struct name of this object, cached here
 	GeneratedType string `json:"-"`
+
+	Enum []interface{} `json:"enum"`
 }
 
 // UnmarshalJSON handles unmarshalling AdditionalProperties from JSON.
@@ -123,10 +125,11 @@ func (schema *Schema) ID() string {
 // Type returns the type which is permitted or an empty string if the type field is missing.
 // The 'type' field in JSON schema also allows for a single string value or an array of strings.
 // Examples:
-//   "a" => "a", false
-//   [] => "", false
-//   ["a"] => "a", false
-//   ["a", "b"] => "a", true
+//
+//	"a" => "a", false
+//	[] => "", false
+//	["a"] => "a", false
+//	["a", "b"] => "a", true
 func (schema *Schema) Type() (firstOrDefault string, multiple bool) {
 	// We've got a single value, e.g. { "type": "object" }
 	if ts, ok := schema.TypeValue.(string); ok {
@@ -151,7 +154,7 @@ func (schema *Schema) Type() (firstOrDefault string, multiple bool) {
 
 // MultiType returns "type" as an array
 func (schema *Schema) MultiType() ([]string, bool) {
-	// We've got a single value, e.g. { "type": "object" }
+	// We've got a single value-, e.g. { "type": "object" }
 	if ts, ok := schema.TypeValue.(string); ok {
 		return []string{ts}, false
 	}
@@ -317,4 +320,8 @@ func (schema *Schema) FixMissingTypeValue() {
 // IsRoot returns true when the schema is the root.
 func (schema *Schema) IsRoot() bool {
 	return schema.Parent == nil
+}
+
+func (schema *Schema) IsEnum() bool {
+	return schema.Enum != nil && len(schema.Enum) != 0
 }

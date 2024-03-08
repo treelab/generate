@@ -14,6 +14,7 @@ type Generator struct {
 	resolver *RefResolver
 	Structs  map[string]Struct
 	Aliases  map[string]Field
+	Enums    map[string]Enum
 	// cache for reference types; k=url v=type
 	refs      map[string]string
 	anonCount int
@@ -26,6 +27,7 @@ func New(schemas ...*Schema) *Generator {
 		resolver: NewRefResolver(schemas),
 		Structs:  make(map[string]Struct),
 		Aliases:  make(map[string]Field),
+		Enums:    make(map[string]Enum),
 		refs:     make(map[string]string),
 	}
 }
@@ -121,6 +123,19 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 				}
 				if !isMultiType {
 					return rv, nil
+				}
+			case "string":
+				if schema.IsEnum() {
+					rv, err := g.processEnum(name, schema)
+					if err != nil {
+						return "", err
+					}
+					if !isMultiType {
+						return rv, nil
+					}
+				}
+				if !isMultiType {
+					return "string", nil
 				}
 			default:
 				rv, err := getPrimitiveTypeName(schemaType, "", false)
@@ -263,6 +278,24 @@ func (g *Generator) processObject(name string, schema *Schema) (typ string, err 
 	return getPrimitiveTypeName("object", name, true)
 }
 
+// name: name of the enum
+// schema: detail incl properties & child objects
+// returns: generated enum type
+func (g *Generator) processEnum(name string, schema *Schema) (typ string, err error) {
+	if !schema.IsEnum() {
+		return "string", nil
+	}
+
+	strct := Enum{
+		Name:  name,
+		Items: schema.Enum,
+	}
+	schema.GeneratedType = name
+
+	g.Enums[strct.Name] = strct
+	return name, nil
+}
+
 func contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
@@ -311,8 +344,11 @@ func (g *Generator) getSchemaName(keyName string, schema *Schema) string {
 	if keyName != "" {
 		return getGolangName(keyName)
 	}
-	if schema.Parent == nil {
+	if schema.IsRoot() {
 		return "Root"
+	}
+	if schema.IsEnum() {
+		return getGolangName(schema.JSONKey)
 	}
 	if schema.JSONKey != "" {
 		return getGolangName(schema.JSONKey)
@@ -396,4 +432,11 @@ type Field struct {
 	// Required is set to true when the field is required.
 	Required    bool
 	Description string
+}
+
+type Enum struct {
+	// The golang name, e.g. "Address1"
+	Name string
+	// enum item name , e.g. enum: ["OPEN", "CREATE"]
+	Items []interface{}
 }

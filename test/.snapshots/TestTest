@@ -2,6 +2,17 @@
 
 package test
 
+// Favouritecat Enum
+type Favouritecat string
+const (
+	Favouritecat_A Favouritecat = "A"
+	Favouritecat_B Favouritecat = "B"
+	Favouritecat_C Favouritecat = "C"
+	Favouritecat_D Favouritecat = "D"
+	Favouritecat_E Favouritecat = "E"
+	Favouritecat_F Favouritecat = "F"
+)
+
 // Address Address
 type Address struct {
 
@@ -41,6 +52,6 @@ type Example struct {
 type Status struct {
 
   // The favourite cat.
-  Favouritecat string `json:"favouritecat,omitempty"`
+  Favouritecat Favouritecat `json:"favouritecat,omitempty"`
 }
 
