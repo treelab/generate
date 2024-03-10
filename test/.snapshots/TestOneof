@@ -32,10 +32,16 @@ const (
 	EntityAttributeType_RECORD_REFERENCE EntityAttributeType = "RECORD_REFERENCE"
 )
 
+// Name 
+type Name struct {
+  First string `json:"first,omitempty"`
+  Type *EntityAttributeType `json:"type,omitempty"`
+}
+
 // Person 
 type Person struct {
-  DataType EntityAttributeType `json:"DataType,omitempty"`
-  Name string `json:"name,omitempty"`
+  Name *Name `json:"name,omitempty"`
+  Typ EntityAttributeType `json:"typ,omitempty"`
 }
 
 // Root 

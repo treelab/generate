@@ -106,7 +106,9 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 	}
 
 	if schema.IsEnum() {
-		return g.processEnum(schemaName, schema)
+		// calculate sub-schema name here, may not actually be used depending on type of schema!
+		subSchemaName := g.getSchemaName(schemaName, schema)
+		return g.processEnum(subSchemaName, schema)
 	}
 
 	types, isMultiType := schema.MultiType()
@@ -289,7 +291,7 @@ func (g *Generator) processEnum(name string, schema *Schema) (typ string, err er
 			strct.Items = append(strct.Items, oneOf.Const.(string))
 		}
 	}
-	schema.GeneratedType = name
+	schema.GeneratedType = "*" + name
 
 	g.Enums[strct.Name] = strct
 	return name, nil
