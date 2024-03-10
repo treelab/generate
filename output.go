@@ -82,8 +82,7 @@ func Output(w io.Writer, g *Generator, pkg string) {
 
 		fmt.Fprintf(w, "const (\n")
 		for _, item := range e.Items {
-			s := item.(string)
-			fmt.Fprintf(w, `	%s_%s %s = "%s"`, e.Name, s, e.Name, s)
+			fmt.Fprintf(w, `	%s_%s %s = "%s"`, e.Name, item, e.Name, item)
 			fmt.Fprintln(w, "")
 		}
 		fmt.Fprintf(w, ")\n")

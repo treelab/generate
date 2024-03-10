@@ -100,6 +100,15 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 	schema.FixMissingTypeValue()
 	// if we have multiple schema types, the golang type will be interface{}
 	typ = "interface{}"
+
+	if schema.IsRef() {
+		return g.processReference(schema)
+	}
+
+	if schema.IsEnum() {
+		return g.processEnum(schemaName, schema)
+	}
+
 	types, isMultiType := schema.MultiType()
 	if len(types) > 0 {
 		for _, schemaType := range types {
@@ -124,19 +133,6 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 				if !isMultiType {
 					return rv, nil
 				}
-			case "string":
-				if schema.IsEnum() {
-					rv, err := g.processEnum(name, schema)
-					if err != nil {
-						return "", err
-					}
-					if !isMultiType {
-						return rv, nil
-					}
-				}
-				if !isMultiType {
-					return "string", nil
-				}
 			default:
 				rv, err := getPrimitiveTypeName(schemaType, "", false)
 				if err != nil {
@@ -146,10 +142,6 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 					return rv, nil
 				}
 			}
-		}
-	} else {
-		if schema.Reference != "" {
-			return g.processReference(schema)
 		}
 	}
 	return // return interface{}
@@ -282,13 +274,18 @@ func (g *Generator) processObject(name string, schema *Schema) (typ string, err 
 // schema: detail incl properties & child objects
 // returns: generated enum type
 func (g *Generator) processEnum(name string, schema *Schema) (typ string, err error) {
-	if !schema.IsEnum() {
-		return "string", nil
-	}
-
 	strct := Enum{
 		Name:  name,
-		Items: schema.Enum,
+		Items: make([]string, 0),
+	}
+
+	if schema.Enum != nil {
+		strct.Items = schema.Enum
+	} else if schema.OneOf != nil {
+		// The const field in the OneOf type of the current string type is used as a member of the enum
+		for _, oneOf := range schema.OneOf {
+			strct.Items = append(strct.Items, oneOf.Const)
+		}
 	}
 	schema.GeneratedType = name
 
@@ -438,5 +435,5 @@ type Enum struct {
 	// The golang name, e.g. "Address1"
 	Name string
 	// enum item name , e.g. enum: ["OPEN", "CREATE"]
-	Items []interface{}
+	Items []string
 }
