@@ -30,11 +30,11 @@ type Schema struct {
 
 	// schema instance enum.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.2
-	Enum []string `json:"enum"`
+	Enum []interface{} `json:"enum"`
 
 	// schema instance const.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.3
-	Const string `json:"const"`
+	Const interface{} `json:"const"`
 
 	// Definitions are inline re-usable schemas.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.9
