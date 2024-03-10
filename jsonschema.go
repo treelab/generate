@@ -28,6 +28,14 @@ type Schema struct {
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.1
 	TypeValue interface{} `json:"type"`
 
+	// schema instance enum.
+	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.2
+	Enum []string `json:"enum"`
+
+	// schema instance const.
+	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.3
+	Const string `json:"const"`
+
 	// Definitions are inline re-usable schemas.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.9
 	Definitions map[string]*Schema
@@ -43,8 +51,11 @@ type Schema struct {
 	// "additionalProperties": false
 	AdditionalPropertiesBool *bool `json:"-"`
 
+	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.2
 	AnyOf []*Schema
+	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.1
 	AllOf []*Schema
+	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.3
 	OneOf []*Schema
 
 	// Default can be used to supply a default JSON value associated with a particular schema.
@@ -77,8 +88,6 @@ type Schema struct {
 
 	// calculated struct name of this object, cached here
 	GeneratedType string `json:"-"`
-
-	Enum []interface{} `json:"enum"`
 }
 
 // UnmarshalJSON handles unmarshalling AdditionalProperties from JSON.
@@ -322,6 +331,30 @@ func (schema *Schema) IsRoot() bool {
 	return schema.Parent == nil
 }
 
+func (schema *Schema) IsRef() bool {
+	_, isMulti := schema.Type()
+	if isMulti {
+		return false
+	}
+	return schema.Reference != ""
+}
+
 func (schema *Schema) IsEnum() bool {
-	return schema.Enum != nil && len(schema.Enum) != 0
+	typ, isMulti := schema.Type()
+	if isMulti {
+		return false
+	}
+	if typ != "string" {
+		return false
+	}
+
+	if schema.Enum != nil && len(schema.Enum) > 0 {
+		return true
+	}
+
+	if schema.OneOf != nil && len(schema.OneOf) > 0 {
+		return true
+	}
+
+	return false
 }
