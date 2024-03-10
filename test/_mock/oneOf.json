@@ -4,114 +4,120 @@
     "person": {
       "type": "object",
       "properties": {
-        "name": { "type": "string" },
-        "DataType": {
-          "oneOf": [
-            {
-              "const": "TEXT",
-              "title": "entity.attr.text"
-            },
-            {
-              "const": "LONG_TEXT",
-              "title": "entity.attr.longText"
-            },
-            {
-              "const": "MULTI_ATTACHMENT",
-              "title": "entity.attr.attachment"
-            },
-            {
-              "const": "MULTI_SELECT",
-              "title": "entity.attr.multiSelect"
-            },
-            {
-              "const": "CASCADED_SELECT",
-              "title": "entity.attr.cascadedSelect"
-            },
-            {
-              "const": "SELECT",
-              "title": "entity.attr.select"
-            },
-            {
-              "const": "STATUS",
-              "title": "entity.attr.status"
-            },
-            {
-              "const": "COLLABORATOR",
-              "title": "entity.attr.collaborator"
-            },
-            {
-              "const": "MULTI_COLLABORATOR",
-              "title": "entity.attr.multiCollaborator"
-            },
-            {
-              "const": "DEPT",
-              "title": "entity.attr.dept"
-            },
-            {
-              "const": "DATETIME",
-              "title": "entity.attr.dateTime"
-            },
-            {
-              "const": "NUMBER",
-              "title": "entity.attr.number"
-            },
-            {
-              "const": "CURRENCY",
-              "title": "entity.attr.currency"
-            },
-            {
-              "const": "RATING",
-              "title": "entity.attr.rating"
-            },
-            {
-              "const": "BOOLEAN",
-              "title": "entity.attr.checkbox"
-            },
-            {
-              "const": "PHONE",
-              "title": "entity.attr.phone"
-            },
-            {
-              "const": "EMAIL",
-              "title": "entity.attr.email"
-            },
-            {
-              "const": "UNIQUE_ID",
-              "title": "entity.attr.uniqueId"
-            },
-            {
-              "const": "LOOKUP",
-              "title": "entity.attr.lookup"
-            },
-            {
-              "const": "FORMULA",
-              "title": "entity.attr.formula"
-            },
-            {
-              "const": "ROLLUP",
-              "title": "entity.attr.rollup"
-            },
-            {
-              "const": "CREATED_AT",
-              "title": "entity.attr.createdAt"
-            },
-            {
-              "const": "CREATED_BY",
-              "title": "entity.attr.createdBy"
-            },
-            {
-              "const": "ID",
-              "title": "entity.attr.ID"
-            },
-            {
-              "const": "RECORD_REFERENCE",
-              "title": "entity.attr.reference"
-            }
-          ],
-          "title": "entity.attribute.type",
-          "type": "string"
-        }
+        "typ": {
+          "$ref": "#/definitions/datatype"
+        },
+        "name": { "type": "object", "properties": {
+          "first": { "type": "string" },
+          "type": { "$ref": "#/definitions/datatype" }
+        } }
       }
+    },
+    "datatype": {
+      "oneOf": [
+        {
+          "const": "TEXT",
+          "title": "entity.attr.text"
+        },
+        {
+          "const": "LONG_TEXT",
+          "title": "entity.attr.longText"
+        },
+        {
+          "const": "MULTI_ATTACHMENT",
+          "title": "entity.attr.attachment"
+        },
+        {
+          "const": "MULTI_SELECT",
+          "title": "entity.attr.multiSelect"
+        },
+        {
+          "const": "CASCADED_SELECT",
+          "title": "entity.attr.cascadedSelect"
+        },
+        {
+          "const": "SELECT",
+          "title": "entity.attr.select"
+        },
+        {
+          "const": "STATUS",
+          "title": "entity.attr.status"
+        },
+        {
+          "const": "COLLABORATOR",
+          "title": "entity.attr.collaborator"
+        },
+        {
+          "const": "MULTI_COLLABORATOR",
+          "title": "entity.attr.multiCollaborator"
+        },
+        {
+          "const": "DEPT",
+          "title": "entity.attr.dept"
+        },
+        {
+          "const": "DATETIME",
+          "title": "entity.attr.dateTime"
+        },
+        {
+          "const": "NUMBER",
+          "title": "entity.attr.number"
+        },
+        {
+          "const": "CURRENCY",
+          "title": "entity.attr.currency"
+        },
+        {
+          "const": "RATING",
+          "title": "entity.attr.rating"
+        },
+        {
+          "const": "BOOLEAN",
+          "title": "entity.attr.checkbox"
+        },
+        {
+          "const": "PHONE",
+          "title": "entity.attr.phone"
+        },
+        {
+          "const": "EMAIL",
+          "title": "entity.attr.email"
+        },
+        {
+          "const": "UNIQUE_ID",
+          "title": "entity.attr.uniqueId"
+        },
+        {
+          "const": "LOOKUP",
+          "title": "entity.attr.lookup"
+        },
+        {
+          "const": "FORMULA",
+          "title": "entity.attr.formula"
+        },
+        {
+          "const": "ROLLUP",
+          "title": "entity.attr.rollup"
+        },
+        {
+          "const": "CREATED_AT",
+          "title": "entity.attr.createdAt"
+        },
+        {
+          "const": "CREATED_BY",
+          "title": "entity.attr.createdBy"
+        },
+        {
+          "const": "ID",
+          "title": "entity.attr.ID"
+        },
+        {
+          "const": "RECORD_REFERENCE",
+          "title": "entity.attr.reference"
+        }
+      ],
+      "title": "entity.attribute.type",
+      "type": "string"
     }
   },
 
