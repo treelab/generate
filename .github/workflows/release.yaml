@@ -1,0 +1,54 @@
+# Release package
+name: Release
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: 
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  release:
+    name: Release
+    runs-on: self-hosted
+    strategy:
+      max-parallel: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.10.0
+      - name: Install dependencies
+        run: |
+          npm config set registry https://registry.npmmirror.com
+          npm install @semantic-release/exec -D
+      - name: Release version
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          npx semantic-release
+          echo "nextversion=$(cat .VERSION)" >> $GITHUB_OUTPUT
+      - name: Notify Deploy Result
+        if: ${{ inputs.releaseId != '' }}
+        env:
+          TREELAB_DEVOPS_TOKEN: ${{ secrets.TREELAB_DEVOPS_TOKEN }}
+          TREELAB_DEVOPS_URL: ${{ secrets.TREELAB_DEVOPS_URL }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          curl -H \"Content-Type: application/json\" -X POST "${TREELAB_DEVOPS_URL}/jenkins/release/" -d '{\"result\": 3,\"branch\":\"master\",\"secret\":\"${TREELAB_DEVOPS_TOKEN}\",\"jobName\":\"${REPOSITORY}\",\"buildNumber\":\"\",\"releaseId\":\"${{ github.event.inputs.releaseId }}\",\"tag\":\"${{ github.event.inputs.tag }}\"}'
