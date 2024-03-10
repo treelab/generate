@@ -2,6 +2,13 @@
 
 package test
 
+import (
+    "bytes"
+    "reflect"
+    "encoding/json"
+    "errors"
+)
+
 // EntityAttributeType Enum
 type EntityAttributeType string
 const (
@@ -35,17 +42,80 @@ const (
 // Name 
 type Name struct {
   First string `json:"first,omitempty"`
-  Type *EntityAttributeType `json:"type,omitempty"`
+  Typ EntityAttributeType `json:"typ"`
 }
 
 // Person 
 type Person struct {
   Name *Name `json:"name,omitempty"`
-  Typ EntityAttributeType `json:"typ,omitempty"`
+  Typ *EntityAttributeType `json:"typ,omitempty"`
 }
 
 // Root 
 type Root struct {
   Person *Person `json:"person,omitempty"`
+}
+
+func (strct *Name) MarshalJSON() ([]byte, error) {
+	buf := bytes.NewBuffer(make([]byte, 0))
+	buf.WriteString("{")
+    comma := false
+    // Marshal the "first" field
+	if reflect.TypeOf(strct.First) != nil && (reflect.TypeOf(strct.First).Kind() == reflect.Bool || !reflect.DeepEqual(strct.First, reflect.Zero(reflect.TypeOf(strct.First)).Interface())) {
+		if comma { 
+			buf.WriteString(",") 
+		}
+		buf.WriteString("\"first\": ")
+		if tmp, err := json.Marshal(strct.First); err != nil {
+			return nil, err
+		} else {
+			buf.Write(tmp)
+		}
+		comma = true
+	}
+    // "Typ" field is required
+    // only required object types supported for marshal checking (for now)
+    // Marshal the "typ" field
+	if comma { 
+		buf.WriteString(",") 
+	}
+	buf.WriteString("\"typ\": ")
+	if tmp, err := json.Marshal(strct.Typ); err != nil {
+		return nil, err
+	} else {
+		buf.Write(tmp)
+	}
+	comma = true
+
+	buf.WriteString("}")
+	rv := buf.Bytes()
+	return rv, nil
+}
+
+func (strct *Name) UnmarshalJSON(b []byte) error {
+    typReceived := false
+    var jsonMap map[string]json.RawMessage
+    if err := json.Unmarshal(b, &jsonMap); err != nil {
+        return err
+    }
+    // parse all the defined properties
+    for k, v := range jsonMap {
+        switch k {
+        case "first":
+            if err := json.Unmarshal([]byte(v), &strct.First); err != nil {
+                return err
+             }
+        case "typ":
+            if err := json.Unmarshal([]byte(v), &strct.Typ); err != nil {
+                return err
+             }
+            typReceived = true
+        }
+    }
+    // check if typ (a required property) was received
+    if !typReceived {
+        return errors.New("\"typ\" is required but was not present")
+    }
+    return nil
 }
 

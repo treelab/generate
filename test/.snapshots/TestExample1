@@ -3,10 +3,10 @@
 package test
 
 import (
+    "bytes"
     "reflect"
     "encoding/json"
     "errors"
-    "bytes"
 )
 
 // Product A product from Acme's catalog

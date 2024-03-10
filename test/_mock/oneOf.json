@@ -7,10 +7,14 @@
         "typ": {
           "$ref": "#/definitions/datatype"
         },
-        "name": { "type": "object", "properties": {
-          "first": { "type": "string" },
-          "type": { "$ref": "#/definitions/datatype" }
-        } }
+        "name": {
+          "type": "object",
+          "properties": {
+            "first": { "type": "string" },
+            "typ": { "$ref": "#/definitions/datatype" }
+          },
+          "required": ["typ"]
+        }
       }
     },
     "datatype": {

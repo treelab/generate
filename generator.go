@@ -106,9 +106,7 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 	}
 
 	if schema.IsEnum() {
-		// calculate sub-schema name here, may not actually be used depending on type of schema!
-		subSchemaName := g.getSchemaName(schemaName, schema)
-		return g.processEnum(subSchemaName, schema)
+		return g.processEnum(schemaName, schema)
 	}
 
 	types, isMultiType := schema.MultiType()
@@ -200,11 +198,16 @@ func (g *Generator) processObject(name string, schema *Schema) (typ string, err 
 		if err != nil {
 			return "", err
 		}
+		isRequired := contains(schema.Required, propKey)
+		if isRequired && strings.HasPrefix(fieldType, "*") {
+			fieldType = strings.TrimPrefix(fieldType, "*")
+		}
+
 		f := Field{
 			Name:        fieldName,
 			JSONName:    propKey,
 			Type:        fieldType,
-			Required:    contains(schema.Required, propKey),
+			Required:    isRequired,
 			Description: prop.Description,
 		}
 		if f.Required {
@@ -276,8 +279,10 @@ func (g *Generator) processObject(name string, schema *Schema) (typ string, err 
 // schema: detail incl properties & child objects
 // returns: generated enum type
 func (g *Generator) processEnum(name string, schema *Schema) (typ string, err error) {
+	// calculate sub-schema name here, may not actually be used depending on type of schema!
+	subSchemaName := g.getSchemaName(name, schema)
 	strct := Enum{
-		Name:  name,
+		Name:  subSchemaName,
 		Items: make([]string, 0),
 	}
 
@@ -291,10 +296,10 @@ func (g *Generator) processEnum(name string, schema *Schema) (typ string, err er
 			strct.Items = append(strct.Items, oneOf.Const.(string))
 		}
 	}
-	schema.GeneratedType = "*" + name
+	schema.GeneratedType = "*" + subSchemaName
 
 	g.Enums[strct.Name] = strct
-	return name, nil
+	return getPrimitiveTypeName("string", subSchemaName, true)
 }
 
 func contains(s []string, e string) bool {
@@ -330,6 +335,9 @@ func getPrimitiveTypeName(schemaType string, subType string, pointer bool) (name
 		}
 		return subType, nil
 	case "string":
+		if pointer {
+			return "*" + subType, nil
+		}
 		return "string", nil
 	}
 
