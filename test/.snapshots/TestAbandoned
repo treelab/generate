@@ -3,11 +3,11 @@
 package test
 
 import (
-    "bytes"
     "reflect"
     "encoding/json"
     "fmt"
     "errors"
+    "bytes"
 )
 
 // PackageList List of packages marked as abandoned for this repository, the mark can be boolean or a package name/URL pointing to a recommended alternative.

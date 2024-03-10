@@ -52,6 +52,6 @@ type Example struct {
 type Status struct {
 
   // The favourite cat.
-  Favouritecat Favouritecat `json:"favouritecat,omitempty"`
+  Favouritecat *Favouritecat `json:"favouritecat,omitempty"`
 }
 

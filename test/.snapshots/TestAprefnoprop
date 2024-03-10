@@ -3,10 +3,10 @@
 package test
 
 import (
-    "reflect"
-    "fmt"
     "encoding/json"
     "bytes"
+    "reflect"
+    "fmt"
 )
 
 // Root
