@@ -101,7 +101,11 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 	// if we have multiple schema types, the golang type will be interface{}
 	typ = "interface{}"
 
+	types, isMultiType := schema.MultiType()
 	if schema.IsRef() {
+		if len(types) > 0 {
+			return "", fmt.Errorf("$ref and type cannot appear at the same time")
+		}
 		return g.processReference(schema)
 	}
 
@@ -109,7 +113,6 @@ func (g *Generator) processSchema(schemaName string, schema *Schema) (typ string
 		return g.processEnum(schemaName, schema)
 	}
 
-	types, isMultiType := schema.MultiType()
 	if len(types) > 0 {
 		for _, schemaType := range types {
 			name := schemaName
