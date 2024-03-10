@@ -280,11 +280,13 @@ func (g *Generator) processEnum(name string, schema *Schema) (typ string, err er
 	}
 
 	if schema.Enum != nil {
-		strct.Items = schema.Enum
+		for _, item := range schema.Enum {
+			strct.Items = append(strct.Items, item.(string))
+		}
 	} else if schema.OneOf != nil {
 		// The const field in the OneOf type of the current string type is used as a member of the enum
 		for _, oneOf := range schema.OneOf {
-			strct.Items = append(strct.Items, oneOf.Const)
+			strct.Items = append(strct.Items, oneOf.Const.(string))
 		}
 	}
 	schema.GeneratedType = name
@@ -343,9 +345,6 @@ func (g *Generator) getSchemaName(keyName string, schema *Schema) string {
 	}
 	if schema.IsRoot() {
 		return "Root"
-	}
-	if schema.IsEnum() {
-		return getGolangName(schema.JSONKey)
 	}
 	if schema.JSONKey != "" {
 		return getGolangName(schema.JSONKey)
