@@ -135,3 +135,8 @@ func TestOneof(t *testing.T) {
 	path := fmt.Sprintf("./_mock/%s.json", "oneOf")
 	Output(t, path)
 }
+
+func TestDefaultValues(t *testing.T) {
+	path := fmt.Sprintf("./_mock/%s.json", "defaultValues")
+	Output(t, path)
+}
