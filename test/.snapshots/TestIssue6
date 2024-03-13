@@ -4,29 +4,29 @@ package test
 
 // Attributes Specific attributes of the asset
 type Attributes struct {
-  Hostname string `json:"hostname,omitempty"`
+  Hostname *string `json:"hostname,omitempty"`
 
   // Physical location of this server (datacenter, rack, pod, etc)
-  Location string `json:"location,omitempty"`
+  Location *string `json:"location,omitempty"`
 
   // Running operating system
   OperatingSystem *OperatingSystem `json:"operating_system,omitempty"`
-  SerialNumber string `json:"serial_number,omitempty"`
+  SerialNumber *string `json:"serial_number,omitempty"`
 }
 
 // LinksItems 
 type LinksItems struct {
-  AssetId string `json:"asset_id,omitempty"`
-  Description string `json:"description,omitempty"`
-  Relationship string `json:"relationship,omitempty"`
+  AssetId *string `json:"asset_id,omitempty"`
+  Description *string `json:"description,omitempty"`
+  Relationship *string `json:"relationship,omitempty"`
 }
 
 // OperatingSystem Running operating system
 type OperatingSystem struct {
-  Family string `json:"family,omitempty"`
-  Name string `json:"name,omitempty"`
-  Revision string `json:"revision,omitempty"`
-  Version string `json:"version,omitempty"`
+  Family *string `json:"family,omitempty"`
+  Name *string `json:"name,omitempty"`
+  Revision *string `json:"revision,omitempty"`
+  Version *string `json:"version,omitempty"`
 }
 
 // Root Physical Server asset

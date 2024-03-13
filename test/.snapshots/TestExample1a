@@ -4,7 +4,6 @@ package test
 
 import (
     "bytes"
-    "reflect"
     "encoding/json"
     "errors"
 )
@@ -37,40 +36,40 @@ func (strct *Dimensions) MarshalJSON() ([]byte, error) {
     // "Height" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "height" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"height\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"height\": ")
 	if tmp, err := json.Marshal(strct.Height); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // "Length" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "length" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"length\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"length\": ")
 	if tmp, err := json.Marshal(strct.Length); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // "Width" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "width" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"width\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"width\": ")
 	if tmp, err := json.Marshal(strct.Width); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
 
@@ -87,6 +86,8 @@ func (strct *Dimensions) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -127,70 +128,66 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "dimensions" field
-	if reflect.TypeOf(strct.Dimensions) != nil && (reflect.TypeOf(strct.Dimensions).Kind() == reflect.Bool || !reflect.DeepEqual(strct.Dimensions, reflect.Zero(reflect.TypeOf(strct.Dimensions)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"dimensions\": ")
-		if tmp, err := json.Marshal(strct.Dimensions); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"dimensions\": ")
+	if tmp, err := json.Marshal(strct.Dimensions); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
     // "Id" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "id" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"id\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"id\": ")
 	if tmp, err := json.Marshal(strct.Id); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"name\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"name\": ")
 	if tmp, err := json.Marshal(strct.Name); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // "Price" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "price" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"price\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"price\": ")
 	if tmp, err := json.Marshal(strct.Price); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // Marshal the "tags" field
-	if reflect.TypeOf(strct.Tags) != nil && (reflect.TypeOf(strct.Tags).Kind() == reflect.Bool || !reflect.DeepEqual(strct.Tags, reflect.Zero(reflect.TypeOf(strct.Tags)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"tags\": ")
-		if tmp, err := json.Marshal(strct.Tags); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"tags\": ")
+	if tmp, err := json.Marshal(strct.Tags); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -205,6 +202,8 @@ func (strct *Product) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {

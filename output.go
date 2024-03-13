@@ -107,17 +107,26 @@ func Output(w io.Writer, g *Generator, pkg string) {
 		for _, fieldKey := range getOrderedFieldNames(s.Fields) {
 			f := s.Fields[fieldKey]
 
+			fieldType := f.Type
 			// Only apply omitempty if the field is not required.
 			omitempty := ",omitempty"
 			if f.Required {
 				omitempty = ""
+			} else {
+				// If the field is required and not a pointer, make it a pointer.
+				if !strings.HasPrefix(fieldType, "*") &&
+					!strings.HasPrefix(fieldType, "interface") &&
+					!strings.HasPrefix(fieldType, "map[string]") &&
+					!strings.HasPrefix(fieldType, "[]") {
+					fieldType = "*" + fieldType
+				}
 			}
 
 			if f.Description != "" {
 				outputFieldDescriptionComment(f.Description, w)
 			}
 
-			fmt.Fprintf(w, "  %s %s `json:\"%s%s\"`\n", f.Name, f.Type, f.JSONName, omitempty)
+			fmt.Fprintf(w, "  %s %s `json:\"%s%s\"`\n", f.Name, fieldType, f.JSONName, omitempty)
 		}
 
 		fmt.Fprintln(w, "}")

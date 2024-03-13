@@ -4,7 +4,6 @@ package test
 
 import (
     "bytes"
-    "reflect"
     "encoding/json"
     "errors"
 )
@@ -41,7 +40,7 @@ const (
 
 // Name 
 type Name struct {
-  First string `json:"first,omitempty"`
+  First *string `json:"first,omitempty"`
   Typ EntityAttributeType `json:"typ"`
 }
 
@@ -61,29 +60,27 @@ func (strct *Name) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "first" field
-	if reflect.TypeOf(strct.First) != nil && (reflect.TypeOf(strct.First).Kind() == reflect.Bool || !reflect.DeepEqual(strct.First, reflect.Zero(reflect.TypeOf(strct.First)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"first\": ")
-		if tmp, err := json.Marshal(strct.First); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"first\": ")
+	if tmp, err := json.Marshal(strct.First); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
     // "Typ" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "typ" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"typ\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"typ\": ")
 	if tmp, err := json.Marshal(strct.Typ); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
 
@@ -98,6 +95,8 @@ func (strct *Name) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {

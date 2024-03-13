@@ -4,12 +4,12 @@ package test
 
 // NotSoAnonymous 
 type NotSoAnonymous struct {
-  Age int `json:"age,omitempty"`
+  Age *int `json:"age,omitempty"`
 }
 
 // Simple 
 type Simple struct {
-  Name string `json:"name,omitempty"`
+  Name *string `json:"name,omitempty"`
   Subbie *NotSoAnonymous `json:"subbie,omitempty"`
 }
 

@@ -3,10 +3,9 @@
 package test
 
 import (
-    "encoding/json"
     "bytes"
-    "reflect"
     "fmt"
+    "encoding/json"
 )
 
 // Root
@@ -49,6 +48,8 @@ func (strct *ApRefNoProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
