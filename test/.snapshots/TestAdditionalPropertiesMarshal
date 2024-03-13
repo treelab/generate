@@ -3,11 +3,10 @@
 package test
 
 import (
-    "bytes"
-    "reflect"
     "encoding/json"
     "fmt"
     "errors"
+    "bytes"
 )
 
 // Root
@@ -19,7 +18,7 @@ type ApFalseNoProp struct {
 
 // ApFalseProp 
 type ApFalseProp struct {
-  Stuff string `json:"stuff,omitempty"`
+  Stuff *string `json:"stuff,omitempty"`
 }
 
 // ApFalseReqProp 
@@ -35,7 +34,7 @@ type ApRefNoProp struct {
 // ApRefProp 
 type ApRefProp struct {
   AdditionalProperties map[string]*Thing `json:"-,omitempty"`
-  Stuff string `json:"stuff,omitempty"`
+  Stuff *string `json:"stuff,omitempty"`
 }
 
 // ApRefReqProp 
@@ -52,7 +51,7 @@ type ApTrueNoProp struct {
 // ApTrueProp 
 type ApTrueProp struct {
   AdditionalProperties map[string]interface{} `json:"-,omitempty"`
-  Stuff string `json:"stuff,omitempty"`
+  Stuff *string `json:"stuff,omitempty"`
 }
 
 // ApTrueReqProp 
@@ -79,6 +78,8 @@ func (strct *ApFalseNoProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, _ := range jsonMap {
         switch k {
@@ -94,18 +95,16 @@ func (strct *ApFalseProp) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "stuff" field
-	if reflect.TypeOf(strct.Stuff) != nil && (reflect.TypeOf(strct.Stuff).Kind() == reflect.Bool || !reflect.DeepEqual(strct.Stuff, reflect.Zero(reflect.TypeOf(strct.Stuff)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"stuff\": ")
-		if tmp, err := json.Marshal(strct.Stuff); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"stuff\": ")
+	if tmp, err := json.Marshal(strct.Stuff); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -117,6 +116,8 @@ func (strct *ApFalseProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -138,14 +139,14 @@ func (strct *ApFalseReqProp) MarshalJSON() ([]byte, error) {
     // "Stuff" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "stuff" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"stuff\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"stuff\": ")
 	if tmp, err := json.Marshal(strct.Stuff); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
 
@@ -160,6 +161,8 @@ func (strct *ApFalseReqProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -207,6 +210,8 @@ func (strct *ApRefNoProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -230,18 +235,16 @@ func (strct *ApRefProp) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "stuff" field
-	if reflect.TypeOf(strct.Stuff) != nil && (reflect.TypeOf(strct.Stuff).Kind() == reflect.Bool || !reflect.DeepEqual(strct.Stuff, reflect.Zero(reflect.TypeOf(strct.Stuff)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"stuff\": ")
-		if tmp, err := json.Marshal(strct.Stuff); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"stuff\": ")
+	if tmp, err := json.Marshal(strct.Stuff); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
     // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
@@ -266,6 +269,8 @@ func (strct *ApRefProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -295,14 +300,14 @@ func (strct *ApRefReqProp) MarshalJSON() ([]byte, error) {
     // "Stuff" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "stuff" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"stuff\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"stuff\": ")
 	if tmp, err := json.Marshal(strct.Stuff); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // Marshal any additional Properties
@@ -330,6 +335,8 @@ func (strct *ApRefReqProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -385,6 +392,8 @@ func (strct *ApTrueNoProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -408,18 +417,16 @@ func (strct *ApTrueProp) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "stuff" field
-	if reflect.TypeOf(strct.Stuff) != nil && (reflect.TypeOf(strct.Stuff).Kind() == reflect.Bool || !reflect.DeepEqual(strct.Stuff, reflect.Zero(reflect.TypeOf(strct.Stuff)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"stuff\": ")
-		if tmp, err := json.Marshal(strct.Stuff); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"stuff\": ")
+	if tmp, err := json.Marshal(strct.Stuff); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
     // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
@@ -444,6 +451,8 @@ func (strct *ApTrueProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
@@ -473,14 +482,14 @@ func (strct *ApTrueReqProp) MarshalJSON() ([]byte, error) {
     // "Stuff" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "stuff" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"stuff\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"stuff\": ")
 	if tmp, err := json.Marshal(strct.Stuff); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // Marshal any additional Properties
@@ -508,6 +517,8 @@ func (strct *ApTrueReqProp) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {

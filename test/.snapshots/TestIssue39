@@ -4,8 +4,8 @@ package test
 
 // Address 
 type Address struct {
-  Number int `json:"number,omitempty"`
-  Postcode string `json:"postcode,omitempty"`
+  Number *int `json:"number,omitempty"`
+  Postcode *string `json:"postcode,omitempty"`
 }
 
 // House 
@@ -16,6 +16,6 @@ type House struct {
 
 // Person 
 type Person struct {
-  Name string `json:"name,omitempty"`
+  Name *string `json:"name,omitempty"`
 }
 

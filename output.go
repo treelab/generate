@@ -107,17 +107,26 @@ func Output(w io.Writer, g *Generator, pkg string) {
 		for _, fieldKey := range getOrderedFieldNames(s.Fields) {
 			f := s.Fields[fieldKey]
 
+			fieldType := f.Type
 			// Only apply omitempty if the field is not required.
 			omitempty := ",omitempty"
 			if f.Required {
 				omitempty = ""
+			} else {
+				// If the field is required and not a pointer, make it a pointer.
+				if !strings.HasPrefix(fieldType, "*") &&
+					!strings.HasPrefix(fieldType, "interface") &&
+					!strings.HasPrefix(fieldType, "map[string]") &&
+					!strings.HasPrefix(fieldType, "[]") {
+					fieldType = "*" + fieldType
+				}
 			}
 
 			if f.Description != "" {
 				outputFieldDescriptionComment(f.Description, w)
 			}
 
-			fmt.Fprintf(w, "  %s %s `json:\"%s%s\"`\n", f.Name, f.Type, f.JSONName, omitempty)
+			fmt.Fprintf(w, "  %s %s `json:\"%s%s\"`\n", f.Name, fieldType, f.JSONName, omitempty)
 		}
 
 		fmt.Fprintln(w, "}")
@@ -129,7 +138,6 @@ func Output(w io.Writer, g *Generator, pkg string) {
 
 func emitMarshalCode(w io.Writer, s Struct, imports map[string]bool) {
 	imports["bytes"] = true
-	imports["reflect"] = true
 	fmt.Fprintf(w,
 		`
 func (strct *%s) MarshalJSON() ([]byte, error) {
@@ -157,37 +165,21 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 				} else {
 					fmt.Fprintf(w, "    // only required object types supported for marshal checking (for now)\n")
 				}
+			}
 
-				fmt.Fprintf(w,
-					`    // Marshal the "%[1]s" field
-	if comma {
-		buf.WriteString(",")
-	}
-	buf.WriteString("\"%[1]s\": ")
+			fmt.Fprintf(w,
+				`    // Marshal the "%[1]s" field
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"%[1]s\": ")
 	if tmp, err := json.Marshal(strct.%[2]s); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
 `, f.JSONName, f.Name)
-			} else {
-				fmt.Fprintf(w,
-					`    // Marshal the "%[1]s" field
-	if reflect.TypeOf(strct.%[2]s) != nil && (reflect.TypeOf(strct.%[2]s).Kind() == reflect.Bool || !reflect.DeepEqual(strct.%[2]s, reflect.Zero(reflect.TypeOf(strct.%[2]s)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"%[1]s\": ")
-		if tmp, err := json.Marshal(strct.%[2]s); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
-	}
-`, f.JSONName, f.Name)
-			}
 		}
 	}
 	if s.AdditionalType != "" {

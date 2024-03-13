@@ -4,7 +4,6 @@ package test
 
 import (
     "bytes"
-    "reflect"
     "encoding/json"
     "errors"
 )
@@ -29,40 +28,40 @@ func (strct *Address) MarshalJSON() ([]byte, error) {
     // "City" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "city" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"city\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"city\": ")
 	if tmp, err := json.Marshal(strct.City); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // "State" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "state" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"state\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"state\": ")
 	if tmp, err := json.Marshal(strct.State); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // "StreetAddress" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "street_address" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"street_address\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"street_address\": ")
 	if tmp, err := json.Marshal(strct.StreetAddress); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
 
@@ -79,6 +78,8 @@ func (strct *Address) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {

@@ -6,7 +6,7 @@ package test
 type Ping struct {
 
   // ID
-  Id string `json:"id,omitempty"`
+  Id *string `json:"id,omitempty"`
 }
 
 // PingPong 
@@ -19,6 +19,6 @@ type PingPong struct {
 type Pong struct {
 
   // ID
-  Id string `json:"id,omitempty"`
+  Id *string `json:"id,omitempty"`
 }
 

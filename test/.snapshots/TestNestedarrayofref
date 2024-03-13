@@ -7,19 +7,19 @@ type AccountTags [][]*Tags
 
 // BazItems 
 type BazItems struct {
-  Qux string `json:"qux,omitempty"`
+  Qux *string `json:"qux,omitempty"`
 }
 
 // Foo 
 type Foo struct {
-  Age int `json:"age,omitempty"`
-  Name string `json:"name,omitempty"`
+  Age *int `json:"age,omitempty"`
+  Name *string `json:"name,omitempty"`
 }
 
 // Tags 
 type Tags struct {
   MainThing *Thing `json:"mainThing,omitempty"`
-  Tag string `json:"tag,omitempty"`
+  Tag *string `json:"tag,omitempty"`
   Things []*Thing `json:"things,omitempty"`
 }
 

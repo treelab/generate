@@ -9,12 +9,12 @@ type AnonArray struct {
 
 // AnonItems 
 type AnonItems struct {
-  Foo string `json:"foo,omitempty"`
+  Foo *string `json:"foo,omitempty"`
 }
 
 // TheArrayItems 
 type TheArrayItems struct {
   Anon []*AnonItems `json:"anon,omitempty"`
-  Name string `json:"name,omitempty"`
+  Name *string `json:"name,omitempty"`
 }
 

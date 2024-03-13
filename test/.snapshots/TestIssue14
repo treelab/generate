@@ -3,11 +3,10 @@
 package test
 
 import (
-    "errors"
     "bytes"
-    "reflect"
     "encoding/json"
     "fmt"
+    "errors"
 )
 
 // ArrayWithoutDefinedItem 
@@ -27,29 +26,27 @@ func (strct *ArrayWithoutDefinedItem) MarshalJSON() ([]byte, error) {
     // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-	if comma { 
-		buf.WriteString(",") 
-	}
-	buf.WriteString("\"name\": ")
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"name\": ")
 	if tmp, err := json.Marshal(strct.Name); err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
+ 	} else {
+ 		buf.Write(tmp)
 	}
 	comma = true
     // Marshal the "repositories" field
-	if reflect.TypeOf(strct.Repositories) != nil && (reflect.TypeOf(strct.Repositories).Kind() == reflect.Bool || !reflect.DeepEqual(strct.Repositories, reflect.Zero(reflect.TypeOf(strct.Repositories)).Interface())) {
-		if comma { 
-			buf.WriteString(",") 
-		}
-		buf.WriteString("\"repositories\": ")
-		if tmp, err := json.Marshal(strct.Repositories); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-		comma = true
+    if comma { 
+        buf.WriteString(",") 
+    }
+    buf.WriteString("\"repositories\": ")
+	if tmp, err := json.Marshal(strct.Repositories); err != nil {
+		return nil, err
+ 	} else {
+ 		buf.Write(tmp)
 	}
+	comma = true
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -62,6 +59,8 @@ func (strct *ArrayWithoutDefinedItem) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }
+    // apply default values
+
     // parse all the defined properties
     for k, v := range jsonMap {
         switch k {
