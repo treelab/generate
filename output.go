@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"reflect"
 	"sort"
 	"strings"
 )
@@ -159,8 +160,8 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 
 				fmt.Fprintf(w,
 					`    // Marshal the "%[1]s" field
-	if comma { 
-		buf.WriteString(",") 
+	if comma {
+		buf.WriteString(",")
 	}
 	buf.WriteString("\"%[1]s\": ")
 	if tmp, err := json.Marshal(strct.%[2]s); err != nil {
@@ -241,6 +242,19 @@ func (strct *%s) UnmarshalJSON(b []byte) error {
     if err := json.Unmarshal(b, &jsonMap); err != nil {
         return err
     }`)
+
+	// set initial field values to their defaults if defined.
+	fmt.Fprintf(w, `
+    // apply default values
+`)
+	for _, fieldKey := range getOrderedFieldNames(s.Fields) {
+		f := s.Fields[fieldKey]
+		if f.JSONName == "-" || f.Default == nil || reflect.TypeOf(f.Default).Name() == "" {
+			continue
+		}
+		fmt.Fprintf(w, `    strct.%s = %#v;
+`, f.Name, f.Default)
+	}
 
 	// figure out if we need the "v" output of the range keyword
 	needVal := "_"
