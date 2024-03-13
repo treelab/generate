@@ -174,7 +174,7 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 			} else {
 				fmt.Fprintf(w,
 					`    // Marshal the "%[1]s" field
-	if reflect.TypeOf(strct.%[2]s) != nil && (reflect.TypeOf(strct.%[2]s).Kind() == reflect.Bool || !reflect.DeepEqual(strct.%[2]s, reflect.Zero(reflect.TypeOf(strct.%[2]s)).Interface())) {
+	if !reflect.ValueOf(strct.%[2]s).IsZero(){
 		if comma { 
 			buf.WriteString(",") 
 		}
