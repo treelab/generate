@@ -3,10 +3,11 @@
 package test
 
 import (
+    "errors"
     "bytes"
+    "reflect"
     "encoding/json"
     "fmt"
-    "errors"
 )
 
 // PackageList List of packages marked as abandoned for this repository, the mark can be boolean or a package name/URL pointing to a recommended alternative.
@@ -28,30 +29,34 @@ func (strct *Root) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "abandoned" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"abandoned\": ")
-	if tmp, err := json.Marshal(strct.Abandoned); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // "Name" field is required
+		if (reflect.TypeOf(strct.Abandoned).Kind() != reflect.Ptr && reflect.TypeOf(strct.Abandoned).Kind() != reflect.Map) || !reflect.ValueOf(strct.Abandoned).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"abandoned\": ")
+			if tmp, err := json.Marshal(strct.Abandoned); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"name\": ")
-	if tmp, err := json.Marshal(strct.Name); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-
+		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"name\": ")
+			if tmp, err := json.Marshal(strct.Name); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil

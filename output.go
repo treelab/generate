@@ -138,6 +138,7 @@ func Output(w io.Writer, g *Generator, pkg string) {
 
 func emitMarshalCode(w io.Writer, s Struct, imports map[string]bool) {
 	imports["bytes"] = true
+	imports["reflect"] = true
 	fmt.Fprintf(w,
 		`
 func (strct *%s) MarshalJSON() ([]byte, error) {
@@ -169,19 +170,22 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 
 			fmt.Fprintf(w,
 				`    // Marshal the "%[1]s" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"%[1]s\": ")
-	if tmp, err := json.Marshal(strct.%[2]s); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-`, f.JSONName, f.Name)
+		if (reflect.TypeOf(strct.%[2]s).Kind() != reflect.Ptr && reflect.TypeOf(strct.%[2]s).Kind() != reflect.Map) || !reflect.ValueOf(strct.%[2]s).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"%[1]s\": ")
+			if tmp, err := json.Marshal(strct.%[2]s); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	`, f.JSONName, f.Name)
 		}
 	}
+
 	if s.AdditionalType != "" {
 		if s.AdditionalType != "false" {
 			imports["fmt"] = true

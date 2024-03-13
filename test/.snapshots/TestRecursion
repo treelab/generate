@@ -4,6 +4,7 @@ package test
 
 import (
     "bytes"
+    "reflect"
     "encoding/json"
 )
 
@@ -23,28 +24,32 @@ func (strct *Person) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "children" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"children\": ")
-	if tmp, err := json.Marshal(strct.Children); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "name" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"name\": ")
-	if tmp, err := json.Marshal(strct.Name); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-
+		if (reflect.TypeOf(strct.Children).Kind() != reflect.Ptr && reflect.TypeOf(strct.Children).Kind() != reflect.Map) || !reflect.ValueOf(strct.Children).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"children\": ")
+			if tmp, err := json.Marshal(strct.Children); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "name" field
+		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"name\": ")
+			if tmp, err := json.Marshal(strct.Name); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil

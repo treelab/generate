@@ -3,9 +3,10 @@
 package test
 
 import (
-    "bytes"
-    "fmt"
     "encoding/json"
+    "bytes"
+    "reflect"
+    "fmt"
 )
 
 // AdditionalProperties 
@@ -89,17 +90,19 @@ func (strct *Property3) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "age" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"age\": ")
-	if tmp, err := json.Marshal(strct.Age); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal any additional Properties
+		if (reflect.TypeOf(strct.Age).Kind() != reflect.Ptr && reflect.TypeOf(strct.Age).Kind() != reflect.Map) || !reflect.ValueOf(strct.Age).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"age\": ")
+			if tmp, err := json.Marshal(strct.Age); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
 			buf.WriteString(",")
@@ -152,17 +155,19 @@ func (strct *Property4) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "age" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"age\": ")
-	if tmp, err := json.Marshal(strct.Age); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal any additional Properties
+		if (reflect.TypeOf(strct.Age).Kind() != reflect.Ptr && reflect.TypeOf(strct.Age).Kind() != reflect.Map) || !reflect.ValueOf(strct.Age).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"age\": ")
+			if tmp, err := json.Marshal(strct.Age); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
 			buf.WriteString(",")
@@ -215,17 +220,19 @@ func (strct *Property5) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "age" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"age\": ")
-	if tmp, err := json.Marshal(strct.Age); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal any additional Properties
+		if (reflect.TypeOf(strct.Age).Kind() != reflect.Ptr && reflect.TypeOf(strct.Age).Kind() != reflect.Map) || !reflect.ValueOf(strct.Age).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"age\": ")
+			if tmp, err := json.Marshal(strct.Age); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
 			buf.WriteString(",")
@@ -278,28 +285,32 @@ func (strct *Property6) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "age" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"age\": ")
-	if tmp, err := json.Marshal(strct.Age); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "pronoun" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"pronoun\": ")
-	if tmp, err := json.Marshal(strct.Pronoun); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal any additional Properties
+		if (reflect.TypeOf(strct.Age).Kind() != reflect.Ptr && reflect.TypeOf(strct.Age).Kind() != reflect.Map) || !reflect.ValueOf(strct.Age).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"age\": ")
+			if tmp, err := json.Marshal(strct.Age); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "pronoun" field
+		if (reflect.TypeOf(strct.Pronoun).Kind() != reflect.Ptr && reflect.TypeOf(strct.Pronoun).Kind() != reflect.Map) || !reflect.ValueOf(strct.Pronoun).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"pronoun\": ")
+			if tmp, err := json.Marshal(strct.Pronoun); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
 			buf.WriteString(",")
@@ -356,39 +367,45 @@ func (strct *Property7) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "po_box" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"po_box\": ")
-	if tmp, err := json.Marshal(strct.PoBox); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "street_name" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"street_name\": ")
-	if tmp, err := json.Marshal(strct.StreetName); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "street_number" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"street_number\": ")
-	if tmp, err := json.Marshal(strct.StreetNumber); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal any additional Properties
+		if (reflect.TypeOf(strct.PoBox).Kind() != reflect.Ptr && reflect.TypeOf(strct.PoBox).Kind() != reflect.Map) || !reflect.ValueOf(strct.PoBox).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"po_box\": ")
+			if tmp, err := json.Marshal(strct.PoBox); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "street_name" field
+		if (reflect.TypeOf(strct.StreetName).Kind() != reflect.Ptr && reflect.TypeOf(strct.StreetName).Kind() != reflect.Map) || !reflect.ValueOf(strct.StreetName).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"street_name\": ")
+			if tmp, err := json.Marshal(strct.StreetName); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "street_number" field
+		if (reflect.TypeOf(strct.StreetNumber).Kind() != reflect.Ptr && reflect.TypeOf(strct.StreetNumber).Kind() != reflect.Map) || !reflect.ValueOf(strct.StreetNumber).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"street_number\": ")
+			if tmp, err := json.Marshal(strct.StreetNumber); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
 			buf.WriteString(",")

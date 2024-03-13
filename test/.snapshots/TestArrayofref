@@ -4,6 +4,7 @@ package test
 
 import (
     "bytes"
+    "reflect"
     "encoding/json"
     "errors"
 )
@@ -28,54 +29,62 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
     // "Id" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "id" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"id\": ")
-	if tmp, err := json.Marshal(strct.Id); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // "Name" field is required
+		if (reflect.TypeOf(strct.Id).Kind() != reflect.Ptr && reflect.TypeOf(strct.Id).Kind() != reflect.Map) || !reflect.ValueOf(strct.Id).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"id\": ")
+			if tmp, err := json.Marshal(strct.Id); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"name\": ")
-	if tmp, err := json.Marshal(strct.Name); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // "Price" field is required
+		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"name\": ")
+			if tmp, err := json.Marshal(strct.Name); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // "Price" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "price" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"price\": ")
-	if tmp, err := json.Marshal(strct.Price); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "tags" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"tags\": ")
-	if tmp, err := json.Marshal(strct.Tags); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-
+		if (reflect.TypeOf(strct.Price).Kind() != reflect.Ptr && reflect.TypeOf(strct.Price).Kind() != reflect.Map) || !reflect.ValueOf(strct.Price).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"price\": ")
+			if tmp, err := json.Marshal(strct.Price); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "tags" field
+		if (reflect.TypeOf(strct.Tags).Kind() != reflect.Ptr && reflect.TypeOf(strct.Tags).Kind() != reflect.Map) || !reflect.ValueOf(strct.Tags).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"tags\": ")
+			if tmp, err := json.Marshal(strct.Tags); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil
