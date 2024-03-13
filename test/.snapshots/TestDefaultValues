@@ -4,6 +4,7 @@ package test
 
 import (
     "bytes"
+    "reflect"
     "encoding/json"
 )
 
@@ -19,39 +20,45 @@ func (strct *Root) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "age" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"age\": ")
-	if tmp, err := json.Marshal(strct.Age); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "name" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"name\": ")
-	if tmp, err := json.Marshal(strct.Name); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // Marshal the "score" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"score\": ")
-	if tmp, err := json.Marshal(strct.Score); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-
+		if (reflect.TypeOf(strct.Age).Kind() != reflect.Ptr && reflect.TypeOf(strct.Age).Kind() != reflect.Map) || !reflect.ValueOf(strct.Age).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"age\": ")
+			if tmp, err := json.Marshal(strct.Age); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "name" field
+		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"name\": ")
+			if tmp, err := json.Marshal(strct.Name); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // Marshal the "score" field
+		if (reflect.TypeOf(strct.Score).Kind() != reflect.Ptr && reflect.TypeOf(strct.Score).Kind() != reflect.Map) || !reflect.ValueOf(strct.Score).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"score\": ")
+			if tmp, err := json.Marshal(strct.Score); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil

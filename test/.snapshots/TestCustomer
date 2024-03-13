@@ -3,9 +3,10 @@
 package test
 
 import (
-    "bytes"
     "encoding/json"
     "errors"
+    "bytes"
+    "reflect"
 )
 
 // Address 
@@ -28,43 +29,49 @@ func (strct *Address) MarshalJSON() ([]byte, error) {
     // "City" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "city" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"city\": ")
-	if tmp, err := json.Marshal(strct.City); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // "State" field is required
+		if (reflect.TypeOf(strct.City).Kind() != reflect.Ptr && reflect.TypeOf(strct.City).Kind() != reflect.Map) || !reflect.ValueOf(strct.City).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"city\": ")
+			if tmp, err := json.Marshal(strct.City); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // "State" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "state" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"state\": ")
-	if tmp, err := json.Marshal(strct.State); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-    // "StreetAddress" field is required
+		if (reflect.TypeOf(strct.State).Kind() != reflect.Ptr && reflect.TypeOf(strct.State).Kind() != reflect.Map) || !reflect.ValueOf(strct.State).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"state\": ")
+			if tmp, err := json.Marshal(strct.State); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	    // "StreetAddress" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "street_address" field
-    if comma { 
-        buf.WriteString(",") 
-    }
-    buf.WriteString("\"street_address\": ")
-	if tmp, err := json.Marshal(strct.StreetAddress); err != nil {
-		return nil, err
- 	} else {
- 		buf.Write(tmp)
-	}
-	comma = true
-
+		if (reflect.TypeOf(strct.StreetAddress).Kind() != reflect.Ptr && reflect.TypeOf(strct.StreetAddress).Kind() != reflect.Map) || !reflect.ValueOf(strct.StreetAddress).IsNil() {
+			if comma { 
+				buf.WriteString(",") 
+			}
+			buf.WriteString("\"street_address\": ")
+			if tmp, err := json.Marshal(strct.StreetAddress); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+		}
+	
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil
