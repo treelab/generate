@@ -159,8 +159,8 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 
 				fmt.Fprintf(w,
 					`    // Marshal the "%[1]s" field
-	if comma { 
-		buf.WriteString(",") 
+	if comma {
+		buf.WriteString(",")
 	}
 	buf.WriteString("\"%[1]s\": ")
 	if tmp, err := json.Marshal(strct.%[2]s); err != nil {
