@@ -166,11 +166,23 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 				} else {
 					fmt.Fprintf(w, "    // only required object types supported for marshal checking (for now)\n")
 				}
+				fmt.Fprintf(w,
+					`    // Marshal the "%[1]s" field
+			if comma { 
+				buf.WriteString(",") 
 			}
-
-			fmt.Fprintf(w,
-				`    // Marshal the "%[1]s" field
-		if (reflect.TypeOf(strct.%[2]s).Kind() != reflect.Ptr && reflect.TypeOf(strct.%[2]s).Kind() != reflect.Map) || !reflect.ValueOf(strct.%[2]s).IsNil() {
+			buf.WriteString("\"%[1]s\": ")
+			if tmp, err := json.Marshal(strct.%[2]s); err != nil {
+				return nil, err
+		 	} else {
+				buf.Write(tmp)
+			}
+			comma = true
+	`, f.JSONName, f.Name)
+			} else {
+				fmt.Fprintf(w,
+					`    // Marshal the "%[1]s" field
+		if reflect.ValueOf(strct.%[2]s).Kind() != reflect.Invalid && !reflect.ValueOf(strct.%[2]s).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -183,6 +195,7 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 			comma = true
 		}
 	`, f.JSONName, f.Name)
+			}
 		}
 	}
 
