@@ -61,7 +61,7 @@ func (strct *Name) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "first" field
-		if (reflect.TypeOf(strct.First).Kind() != reflect.Ptr && reflect.TypeOf(strct.First).Kind() != reflect.Map) || !reflect.ValueOf(strct.First).IsNil() {
+		if reflect.ValueOf(strct.First).IsValid() && !reflect.ValueOf(strct.First).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -76,7 +76,6 @@ func (strct *Name) MarshalJSON() ([]byte, error) {
 	    // "Typ" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "typ" field
-		if (reflect.TypeOf(strct.Typ).Kind() != reflect.Ptr && reflect.TypeOf(strct.Typ).Kind() != reflect.Map) || !reflect.ValueOf(strct.Typ).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -87,7 +86,6 @@ func (strct *Name) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	
 	buf.WriteString("}")
 	rv := buf.Bytes()

@@ -24,7 +24,7 @@ func (strct *Person) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "children" field
-		if (reflect.TypeOf(strct.Children).Kind() != reflect.Ptr && reflect.TypeOf(strct.Children).Kind() != reflect.Map) || !reflect.ValueOf(strct.Children).IsNil() {
+		if reflect.ValueOf(strct.Children).IsValid() && !reflect.ValueOf(strct.Children).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -37,7 +37,7 @@ func (strct *Person) MarshalJSON() ([]byte, error) {
 			comma = true
 		}
 	    // Marshal the "name" field
-		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
+		if reflect.ValueOf(strct.Name).IsValid() && !reflect.ValueOf(strct.Name).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
