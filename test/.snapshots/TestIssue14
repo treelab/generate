@@ -3,11 +3,11 @@
 package test
 
 import (
+    "errors"
+    "bytes"
     "reflect"
     "encoding/json"
     "fmt"
-    "errors"
-    "bytes"
 )
 
 // ArrayWithoutDefinedItem 
@@ -27,7 +27,6 @@ func (strct *ArrayWithoutDefinedItem) MarshalJSON() ([]byte, error) {
     // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -38,9 +37,8 @@ func (strct *ArrayWithoutDefinedItem) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // Marshal the "repositories" field
-		if (reflect.TypeOf(strct.Repositories).Kind() != reflect.Ptr && reflect.TypeOf(strct.Repositories).Kind() != reflect.Map) || !reflect.ValueOf(strct.Repositories).IsNil() {
+		if reflect.ValueOf(strct.Repositories).IsValid() && !reflect.ValueOf(strct.Repositories).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}

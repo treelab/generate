@@ -3,10 +3,10 @@
 package test
 
 import (
-    "encoding/json"
-    "errors"
     "bytes"
     "reflect"
+    "encoding/json"
+    "errors"
 )
 
 // ProductSet
@@ -37,7 +37,6 @@ func (strct *Dimensions) MarshalJSON() ([]byte, error) {
     // "Height" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "height" field
-		if (reflect.TypeOf(strct.Height).Kind() != reflect.Ptr && reflect.TypeOf(strct.Height).Kind() != reflect.Map) || !reflect.ValueOf(strct.Height).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -48,11 +47,9 @@ func (strct *Dimensions) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // "Length" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "length" field
-		if (reflect.TypeOf(strct.Length).Kind() != reflect.Ptr && reflect.TypeOf(strct.Length).Kind() != reflect.Map) || !reflect.ValueOf(strct.Length).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -63,11 +60,9 @@ func (strct *Dimensions) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // "Width" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "width" field
-		if (reflect.TypeOf(strct.Width).Kind() != reflect.Ptr && reflect.TypeOf(strct.Width).Kind() != reflect.Map) || !reflect.ValueOf(strct.Width).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -78,7 +73,6 @@ func (strct *Dimensions) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -135,7 +129,7 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "dimensions" field
-		if (reflect.TypeOf(strct.Dimensions).Kind() != reflect.Ptr && reflect.TypeOf(strct.Dimensions).Kind() != reflect.Map) || !reflect.ValueOf(strct.Dimensions).IsNil() {
+		if reflect.ValueOf(strct.Dimensions).IsValid() && !reflect.ValueOf(strct.Dimensions).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -150,7 +144,6 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
 	    // "Id" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "id" field
-		if (reflect.TypeOf(strct.Id).Kind() != reflect.Ptr && reflect.TypeOf(strct.Id).Kind() != reflect.Map) || !reflect.ValueOf(strct.Id).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -161,11 +154,9 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -176,11 +167,9 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // "Price" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "price" field
-		if (reflect.TypeOf(strct.Price).Kind() != reflect.Ptr && reflect.TypeOf(strct.Price).Kind() != reflect.Map) || !reflect.ValueOf(strct.Price).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -191,9 +180,8 @@ func (strct *Product) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // Marshal the "tags" field
-		if (reflect.TypeOf(strct.Tags).Kind() != reflect.Ptr && reflect.TypeOf(strct.Tags).Kind() != reflect.Map) || !reflect.ValueOf(strct.Tags).IsNil() {
+		if reflect.ValueOf(strct.Tags).IsValid() && !reflect.ValueOf(strct.Tags).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}

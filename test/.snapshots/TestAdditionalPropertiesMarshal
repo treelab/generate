@@ -96,7 +96,7 @@ func (strct *ApFalseProp) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "stuff" field
-		if (reflect.TypeOf(strct.Stuff).Kind() != reflect.Ptr && reflect.TypeOf(strct.Stuff).Kind() != reflect.Map) || !reflect.ValueOf(strct.Stuff).IsNil() {
+		if reflect.ValueOf(strct.Stuff).IsValid() && !reflect.ValueOf(strct.Stuff).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -142,7 +142,6 @@ func (strct *ApFalseReqProp) MarshalJSON() ([]byte, error) {
     // "Stuff" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "stuff" field
-		if (reflect.TypeOf(strct.Stuff).Kind() != reflect.Ptr && reflect.TypeOf(strct.Stuff).Kind() != reflect.Map) || !reflect.ValueOf(strct.Stuff).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -153,7 +152,6 @@ func (strct *ApFalseReqProp) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -240,7 +238,7 @@ func (strct *ApRefProp) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "stuff" field
-		if (reflect.TypeOf(strct.Stuff).Kind() != reflect.Ptr && reflect.TypeOf(strct.Stuff).Kind() != reflect.Map) || !reflect.ValueOf(strct.Stuff).IsNil() {
+		if reflect.ValueOf(strct.Stuff).IsValid() && !reflect.ValueOf(strct.Stuff).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -307,7 +305,6 @@ func (strct *ApRefReqProp) MarshalJSON() ([]byte, error) {
     // "Stuff" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "stuff" field
-		if (reflect.TypeOf(strct.Stuff).Kind() != reflect.Ptr && reflect.TypeOf(strct.Stuff).Kind() != reflect.Map) || !reflect.ValueOf(strct.Stuff).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -318,7 +315,6 @@ func (strct *ApRefReqProp) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {
@@ -426,7 +422,7 @@ func (strct *ApTrueProp) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "stuff" field
-		if (reflect.TypeOf(strct.Stuff).Kind() != reflect.Ptr && reflect.TypeOf(strct.Stuff).Kind() != reflect.Map) || !reflect.ValueOf(strct.Stuff).IsNil() {
+		if reflect.ValueOf(strct.Stuff).IsValid() && !reflect.ValueOf(strct.Stuff).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -493,7 +489,6 @@ func (strct *ApTrueReqProp) MarshalJSON() ([]byte, error) {
     // "Stuff" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "stuff" field
-		if (reflect.TypeOf(strct.Stuff).Kind() != reflect.Ptr && reflect.TypeOf(strct.Stuff).Kind() != reflect.Map) || !reflect.ValueOf(strct.Stuff).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -504,7 +499,6 @@ func (strct *ApTrueReqProp) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	    // Marshal any additional Properties
     for k, v := range strct.AdditionalProperties {
 		if comma {

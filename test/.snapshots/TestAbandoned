@@ -3,11 +3,11 @@
 package test
 
 import (
-    "errors"
     "bytes"
     "reflect"
     "encoding/json"
     "fmt"
+    "errors"
 )
 
 // PackageList List of packages marked as abandoned for this repository, the mark can be boolean or a package name/URL pointing to a recommended alternative.
@@ -29,7 +29,7 @@ func (strct *Root) MarshalJSON() ([]byte, error) {
 	buf.WriteString("{")
     comma := false
     // Marshal the "abandoned" field
-		if (reflect.TypeOf(strct.Abandoned).Kind() != reflect.Ptr && reflect.TypeOf(strct.Abandoned).Kind() != reflect.Map) || !reflect.ValueOf(strct.Abandoned).IsNil() {
+		if reflect.ValueOf(strct.Abandoned).IsValid() && !reflect.ValueOf(strct.Abandoned).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -44,7 +44,6 @@ func (strct *Root) MarshalJSON() ([]byte, error) {
 	    // "Name" field is required
     // only required object types supported for marshal checking (for now)
     // Marshal the "name" field
-		if (reflect.TypeOf(strct.Name).Kind() != reflect.Ptr && reflect.TypeOf(strct.Name).Kind() != reflect.Map) || !reflect.ValueOf(strct.Name).IsNil() {
 			if comma { 
 				buf.WriteString(",") 
 			}
@@ -55,7 +54,6 @@ func (strct *Root) MarshalJSON() ([]byte, error) {
 				buf.Write(tmp)
 			}
 			comma = true
-		}
 	
 	buf.WriteString("}")
 	rv := buf.Bytes()

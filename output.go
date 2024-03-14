@@ -182,7 +182,7 @@ func (strct *%s) MarshalJSON() ([]byte, error) {
 			} else {
 				fmt.Fprintf(w,
 					`    // Marshal the "%[1]s" field
-		if reflect.ValueOf(strct.%[2]s).Kind() != reflect.Invalid && !reflect.ValueOf(strct.%[2]s).IsNil() {
+		if reflect.ValueOf(strct.%[2]s).IsValid() && !reflect.ValueOf(strct.%[2]s).IsZero() {
 			if comma { 
 				buf.WriteString(",") 
 			}
