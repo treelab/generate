@@ -3,10 +3,7 @@
 package test
 
 import (
-    "bytes"
-    "reflect"
     "encoding/json"
-    "fmt"
     "errors"
 )
 
@@ -22,42 +19,6 @@ type Root struct {
 
   // Repository name.
   Name string `json:"name"`
-}
-
-func (strct *Root) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "abandoned" field
-		if reflect.ValueOf(strct.Abandoned).IsValid() && !reflect.ValueOf(strct.Abandoned).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"abandoned\": ")
-			if tmp, err := json.Marshal(strct.Abandoned); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // "Name" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "name" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"name\": ")
-			if tmp, err := json.Marshal(strct.Name); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Root) UnmarshalJSON(b []byte) error {
@@ -80,8 +41,6 @@ func (strct *Root) UnmarshalJSON(b []byte) error {
                 return err
              }
             nameReceived = true
-        default:
-            return fmt.Errorf("additional property not allowed: \"" + k + "\"")
         }
     }
     // check if name (a required property) was received

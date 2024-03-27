@@ -3,8 +3,6 @@
 package test
 
 import (
-    "bytes"
-    "reflect"
     "encoding/json"
     "errors"
 )
@@ -20,55 +18,6 @@ type Address struct {
 type Root struct {
   BillingAddress *Address `json:"billing_address,omitempty"`
   ShippingAddress *Address `json:"shipping_address,omitempty"`
-}
-
-func (strct *Address) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // "City" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "city" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"city\": ")
-			if tmp, err := json.Marshal(strct.City); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	    // "State" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "state" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"state\": ")
-			if tmp, err := json.Marshal(strct.State); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	    // "StreetAddress" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "street_address" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"street_address\": ")
-			if tmp, err := json.Marshal(strct.StreetAddress); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Address) UnmarshalJSON(b []byte) error {
