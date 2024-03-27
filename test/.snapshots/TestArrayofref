@@ -3,8 +3,6 @@
 package test
 
 import (
-    "bytes"
-    "reflect"
     "encoding/json"
     "errors"
 )
@@ -20,68 +18,6 @@ type Product struct {
   Name string `json:"name"`
   Price float64 `json:"price"`
   Tags []string `json:"tags,omitempty"`
-}
-
-func (strct *Product) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // "Id" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "id" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"id\": ")
-			if tmp, err := json.Marshal(strct.Id); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	    // "Name" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "name" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"name\": ")
-			if tmp, err := json.Marshal(strct.Name); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	    // "Price" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "price" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"price\": ")
-			if tmp, err := json.Marshal(strct.Price); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	    // Marshal the "tags" field
-		if reflect.ValueOf(strct.Tags).IsValid() && !reflect.ValueOf(strct.Tags).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"tags\": ")
-			if tmp, err := json.Marshal(strct.Tags); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Product) UnmarshalJSON(b []byte) error {

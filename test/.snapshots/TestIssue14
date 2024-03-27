@@ -3,11 +3,8 @@
 package test
 
 import (
-    "errors"
-    "bytes"
-    "reflect"
     "encoding/json"
-    "fmt"
+    "errors"
 )
 
 // ArrayWithoutDefinedItem 
@@ -18,42 +15,6 @@ type ArrayWithoutDefinedItem struct {
 
   // A set of additional repositories where packages can be found.
   Repositories []interface{} `json:"repositories,omitempty"`
-}
-
-func (strct *ArrayWithoutDefinedItem) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // "Name" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "name" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"name\": ")
-			if tmp, err := json.Marshal(strct.Name); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	    // Marshal the "repositories" field
-		if reflect.ValueOf(strct.Repositories).IsValid() && !reflect.ValueOf(strct.Repositories).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"repositories\": ")
-			if tmp, err := json.Marshal(strct.Repositories); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *ArrayWithoutDefinedItem) UnmarshalJSON(b []byte) error {
@@ -76,8 +37,6 @@ func (strct *ArrayWithoutDefinedItem) UnmarshalJSON(b []byte) error {
             if err := json.Unmarshal([]byte(v), &strct.Repositories); err != nil {
                 return err
              }
-        default:
-            return fmt.Errorf("additional property not allowed: \"" + k + "\"")
         }
     }
     // check if name (a required property) was received

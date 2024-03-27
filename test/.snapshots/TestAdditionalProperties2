@@ -4,9 +4,6 @@ package test
 
 import (
     "encoding/json"
-    "bytes"
-    "reflect"
-    "fmt"
 )
 
 // AdditionalProperties 
@@ -85,42 +82,6 @@ type Property7 struct {
   StreetNumber *int `json:"street_number,omitempty"`
 }
 
-func (strct *Property3) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "age" field
-		if reflect.ValueOf(strct.Age).IsValid() && !reflect.ValueOf(strct.Age).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"age\": ")
-			if tmp, err := json.Marshal(strct.Age); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal any additional Properties
-    for k, v := range strct.AdditionalProperties {
-		if comma {
-			buf.WriteString(",")
-		}
-        buf.WriteString(fmt.Sprintf("\"%s\":", k))
-		if tmp, err := json.Marshal(v); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-        comma = true
-	}
-
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
-}
-
 func (strct *Property3) UnmarshalJSON(b []byte) error {
     var jsonMap map[string]json.RawMessage
     if err := json.Unmarshal(b, &jsonMap); err != nil {
@@ -148,42 +109,6 @@ func (strct *Property3) UnmarshalJSON(b []byte) error {
         }
     }
     return nil
-}
-
-func (strct *Property4) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "age" field
-		if reflect.ValueOf(strct.Age).IsValid() && !reflect.ValueOf(strct.Age).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"age\": ")
-			if tmp, err := json.Marshal(strct.Age); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal any additional Properties
-    for k, v := range strct.AdditionalProperties {
-		if comma {
-			buf.WriteString(",")
-		}
-        buf.WriteString(fmt.Sprintf("\"%s\":", k))
-		if tmp, err := json.Marshal(v); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-        comma = true
-	}
-
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Property4) UnmarshalJSON(b []byte) error {
@@ -215,42 +140,6 @@ func (strct *Property4) UnmarshalJSON(b []byte) error {
     return nil
 }
 
-func (strct *Property5) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "age" field
-		if reflect.ValueOf(strct.Age).IsValid() && !reflect.ValueOf(strct.Age).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"age\": ")
-			if tmp, err := json.Marshal(strct.Age); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal any additional Properties
-    for k, v := range strct.AdditionalProperties {
-		if comma {
-			buf.WriteString(",")
-		}
-        buf.WriteString(fmt.Sprintf("\"%s\":", k))
-		if tmp, err := json.Marshal(v); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-        comma = true
-	}
-
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
-}
-
 func (strct *Property5) UnmarshalJSON(b []byte) error {
     var jsonMap map[string]json.RawMessage
     if err := json.Unmarshal(b, &jsonMap); err != nil {
@@ -278,55 +167,6 @@ func (strct *Property5) UnmarshalJSON(b []byte) error {
         }
     }
     return nil
-}
-
-func (strct *Property6) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "age" field
-		if reflect.ValueOf(strct.Age).IsValid() && !reflect.ValueOf(strct.Age).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"age\": ")
-			if tmp, err := json.Marshal(strct.Age); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal the "pronoun" field
-		if reflect.ValueOf(strct.Pronoun).IsValid() && !reflect.ValueOf(strct.Pronoun).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"pronoun\": ")
-			if tmp, err := json.Marshal(strct.Pronoun); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal any additional Properties
-    for k, v := range strct.AdditionalProperties {
-		if comma {
-			buf.WriteString(",")
-		}
-        buf.WriteString(fmt.Sprintf("\"%s\":", k))
-		if tmp, err := json.Marshal(v); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-        comma = true
-	}
-
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Property6) UnmarshalJSON(b []byte) error {
@@ -360,68 +200,6 @@ func (strct *Property6) UnmarshalJSON(b []byte) error {
         }
     }
     return nil
-}
-
-func (strct *Property7) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "po_box" field
-		if reflect.ValueOf(strct.PoBox).IsValid() && !reflect.ValueOf(strct.PoBox).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"po_box\": ")
-			if tmp, err := json.Marshal(strct.PoBox); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal the "street_name" field
-		if reflect.ValueOf(strct.StreetName).IsValid() && !reflect.ValueOf(strct.StreetName).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"street_name\": ")
-			if tmp, err := json.Marshal(strct.StreetName); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal the "street_number" field
-		if reflect.ValueOf(strct.StreetNumber).IsValid() && !reflect.ValueOf(strct.StreetNumber).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"street_number\": ")
-			if tmp, err := json.Marshal(strct.StreetNumber); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal any additional Properties
-    for k, v := range strct.AdditionalProperties {
-		if comma {
-			buf.WriteString(",")
-		}
-        buf.WriteString(fmt.Sprintf("\"%s\":", k))
-		if tmp, err := json.Marshal(v); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-        comma = true
-	}
-
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Property7) UnmarshalJSON(b []byte) error {

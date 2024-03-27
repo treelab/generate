@@ -3,10 +3,8 @@
 package test
 
 import (
-    "reflect"
     "encoding/json"
     "errors"
-    "bytes"
 )
 
 // EntityAttributeType Enum
@@ -54,42 +52,6 @@ type Person struct {
 // Root 
 type Root struct {
   Person *Person `json:"person,omitempty"`
-}
-
-func (strct *Name) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "first" field
-		if reflect.ValueOf(strct.First).IsValid() && !reflect.ValueOf(strct.First).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"first\": ")
-			if tmp, err := json.Marshal(strct.First); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // "Typ" field is required
-    // only required object types supported for marshal checking (for now)
-    // Marshal the "typ" field
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"typ\": ")
-			if tmp, err := json.Marshal(strct.Typ); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-	
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Name) UnmarshalJSON(b []byte) error {

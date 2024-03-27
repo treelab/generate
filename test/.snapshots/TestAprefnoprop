@@ -3,9 +3,6 @@
 package test
 
 import (
-    "bytes"
-    "reflect"
-    "fmt"
     "encoding/json"
 )
 
@@ -19,29 +16,6 @@ type ApRefNoProp struct {
 
 // Thing 
 type Thing struct {
-}
-
-func (strct *ApRefNoProp) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal any additional Properties
-    for k, v := range strct.AdditionalProperties {
-		if comma {
-			buf.WriteString(",")
-		}
-        buf.WriteString(fmt.Sprintf("\"%s\":", k))
-		if tmp, err := json.Marshal(v); err != nil {
-			return nil, err
-		} else {
-			buf.Write(tmp)
-		}
-        comma = true
-	}
-
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *ApRefNoProp) UnmarshalJSON(b []byte) error {

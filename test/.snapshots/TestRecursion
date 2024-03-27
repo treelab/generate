@@ -3,8 +3,6 @@
 package test
 
 import (
-    "bytes"
-    "reflect"
     "encoding/json"
 )
 
@@ -17,42 +15,6 @@ type Person struct {
 // Root 
 type Root struct {
   Person *Person `json:"person,omitempty"`
-}
-
-func (strct *Person) MarshalJSON() ([]byte, error) {
-	buf := bytes.NewBuffer(make([]byte, 0))
-	buf.WriteString("{")
-    comma := false
-    // Marshal the "children" field
-		if reflect.ValueOf(strct.Children).IsValid() && !reflect.ValueOf(strct.Children).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"children\": ")
-			if tmp, err := json.Marshal(strct.Children); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	    // Marshal the "name" field
-		if reflect.ValueOf(strct.Name).IsValid() && !reflect.ValueOf(strct.Name).IsZero() {
-			if comma { 
-				buf.WriteString(",") 
-			}
-			buf.WriteString("\"name\": ")
-			if tmp, err := json.Marshal(strct.Name); err != nil {
-				return nil, err
-		 	} else {
-				buf.Write(tmp)
-			}
-			comma = true
-		}
-	
-	buf.WriteString("}")
-	rv := buf.Bytes()
-	return rv, nil
 }
 
 func (strct *Person) UnmarshalJSON(b []byte) error {
