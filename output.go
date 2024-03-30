@@ -113,11 +113,12 @@ func Output(w io.Writer, g *Generator, pkg string) {
 			if f.Required {
 				omitempty = ""
 			} else {
-				// If the field is required and not a pointer, make it a pointer.
+				// If the field is required and not a pointer or not default value, make it a pointer.
 				if !strings.HasPrefix(fieldType, "*") &&
 					!strings.HasPrefix(fieldType, "interface") &&
 					!strings.HasPrefix(fieldType, "map[string]") &&
-					!strings.HasPrefix(fieldType, "[]") {
+					!strings.HasPrefix(fieldType, "[]") &&
+					f.Default == nil {
 					fieldType = "*" + fieldType
 				}
 			}
@@ -320,7 +321,7 @@ func (strct *%s) UnmarshalJSON(b []byte) error {
 	// check all Required fields were received
 	for _, fieldKey := range getOrderedFieldNames(s.Fields) {
 		f := s.Fields[fieldKey]
-		if f.Required {
+		if f.Required && f.Default == nil {
 			imports["errors"] = true
 			fmt.Fprintf(w, `    // check if %s (a required property) was received
     if !%sReceived {
