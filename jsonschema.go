@@ -13,7 +13,7 @@ type AdditionalProperties Schema
 type Schema struct {
 	// SchemaType identifies the schema version.
 	// http://json-schema.org/draft-07/json-schema-core.html#rfc.section.7
-	SchemaType string `json:"$schema"`
+	SchemaType string `json:"$schema,omitempty"`
 
 	// ID{04,06} is the schema URI identifier.
 	// http://json-schema.org/draft-07/json-schema-core.html#rfc.section.8.2
