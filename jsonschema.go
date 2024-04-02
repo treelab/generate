@@ -17,33 +17,33 @@ type Schema struct {
 
 	// ID{04,06} is the schema URI identifier.
 	// http://json-schema.org/draft-07/json-schema-core.html#rfc.section.8.2
-	ID04 string `json:"id"`  // up to draft-04
-	ID06 string `json:"$id"` // from draft-06 onwards
+	ID04 string `json:"id,omitempty"`  // up to draft-04
+	ID06 string `json:"$id,omitempty"` // from draft-06 onwards
 
 	// Title and Description state the intent of the schema.
-	Title       string
-	Description string
+	Title       string `json:"title,omitempty"`
+	Description string `json:"description,omitempty"`
 
 	// TypeValue is the schema instance type.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.1
-	TypeValue interface{} `json:"type"`
+	TypeValue interface{} `json:"type,omitempty"`
 
 	// schema instance enum.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.2
-	Enum []interface{} `json:"enum"`
+	Enum []interface{} `json:"enum,omitempty"`
 
 	// schema instance const.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.1.3
-	Const interface{} `json:"const"`
+	Const interface{} `json:"const,omitempty"`
 
 	// Definitions are inline re-usable schemas.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.9
-	Definitions map[string]*Schema
+	Definitions map[string]*Schema `json:"definitions,omitempty"`
 
 	// Properties, Required and AdditionalProperties describe an object's child instances.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.5
-	Properties map[string]*Schema
-	Required   []string
+	Properties map[string]*Schema `json:"properties,omitempty"`
+	Required   []string           `json:"required,omitempty"`
 
 	// "additionalProperties": {...}
 	AdditionalProperties *AdditionalProperties
@@ -52,27 +52,27 @@ type Schema struct {
 	AdditionalPropertiesBool *bool `json:"-"`
 
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.2
-	AnyOf []*Schema
+	AnyOf []*Schema `json:"anyOf,omitempty"`
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.1
-	AllOf []*Schema
+	AllOf []*Schema `json:"allOf,omitempty"`
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.3
-	OneOf []*Schema
+	OneOf []*Schema `json:"oneOf,omitempty"`
 
 	// Default can be used to supply a default JSON value associated with a particular schema.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.10.2
-	Default interface{}
+	Default interface{} `json:"default,omitempty"`
 
 	// Examples ...
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.10.4
-	Examples []interface{}
+	Examples []interface{} `json:"examples,omitempty"`
 
 	// Reference is a URI reference to a schema.
 	// http://json-schema.org/draft-07/json-schema-core.html#rfc.section.8
-	Reference string `json:"$ref"`
+	Reference string `json:"$ref,omitempty"`
 
 	// Items represents the types that are permitted in the array.
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.4
-	Items *Schema
+	Items *Schema `json:"items,omitempty"`
 
 	// NameCount is the number of times the instance name was encountered across the schema.
 	NameCount int `json:"-" `
