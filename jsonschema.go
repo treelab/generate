@@ -46,7 +46,7 @@ type Schema struct {
 	Required   []string           `json:"required,omitempty"`
 
 	// "additionalProperties": {...}
-	AdditionalProperties *AdditionalProperties
+	AdditionalProperties *AdditionalProperties `json:"additionalProperties,omitempty"`
 
 	// "additionalProperties": false
 	AdditionalPropertiesBool *bool `json:"-"`
