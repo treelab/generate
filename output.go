@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -40,6 +41,17 @@ func getOrderedStructNames(m map[string]Struct) []string {
 	}
 	sort.Strings(keys)
 	return keys
+}
+
+func sanitizeFieldName(name string) string {
+	re := regexp.MustCompile(`[^a-zA-Z\d]`)
+	safeName := re.ReplaceAllString(name, "_")
+
+	re = regexp.MustCompile(`^\d`)
+	if re.MatchString(safeName) {
+		safeName = "_" + safeName
+	}
+	return safeName
 }
 
 // Output generates code and writes to w.
@@ -83,7 +95,7 @@ func Output(w io.Writer, g *Generator, pkg string) {
 
 		fmt.Fprintf(w, "const (\n")
 		for _, item := range e.Items {
-			fmt.Fprintf(w, `	%s_%s %s = "%s"`, e.Name, item, e.Name, item)
+			fmt.Fprintf(w, `	%s_%s %s = "%s"`, e.Name, sanitizeFieldName(item), e.Name, item)
 			fmt.Fprintln(w, "")
 		}
 		fmt.Fprintf(w, ")\n")
