@@ -46,10 +46,10 @@ type Schema struct {
 	Required   []string           `json:"required,omitempty"`
 
 	// "additionalProperties": {...}
-	AdditionalProperties *AdditionalProperties `json:"additionalProperties,omitempty"`
+	AdditionalProperties *AdditionalProperties `json:"-"`
 
 	// "additionalProperties": false
-	AdditionalPropertiesBool *bool `json:"-"`
+	AdditionalPropertiesBool *bool `json:"additionalProperties,omitempty"`
 
 	// http://json-schema.org/draft-07/json-schema-validation.html#rfc.section.6.7.2
 	AnyOf []*Schema `json:"anyOf,omitempty"`
